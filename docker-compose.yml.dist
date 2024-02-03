@@ -1,0 +1,54 @@
+version: '3.5'
+
+services:
+  url-shortener-nginx:
+    container_name: url-shortener-nginx
+    build:
+      context: ./docker/nginx
+      args:
+        UID: $U_ID
+    ports:
+      - 1100:80
+    volumes:
+      - ./public:/appdata/www/public
+    depends_on:
+      - url-shortener-php
+    networks:
+      - url-shortener-network
+
+  url-shortener-php:
+    container_name: url-shortener-php
+    build:
+      context: docker/php
+      args:
+        UID: $U_ID
+    volumes:
+      - ./:/appdata/www
+    env_file:
+      - .env
+    depends_on:
+      - url-shortener-database
+    networks:
+      - url-shortener-network
+
+  url-shortener-database:
+    container_name: url-shortener-database
+    build:
+      context: docker/postgres
+    ports:
+      - 10100:5432
+    environment:
+      POSTGRES_DB: url_shortener_database
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    volumes:
+      - url-shortener-database-data:/var/lib/postgresql/data:cached
+    networks:
+      - url-shortener-network
+
+volumes:
+  url-shortener-database-data:
+
+networks:
+  url-shortener-network:
+    external: true
