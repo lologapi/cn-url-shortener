@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <entity name="App\Entity\ShortenedUrl" table="shortened_urls">
+        <id name="id" type="string" column-definition="CHAR(36) NOT NULL" />
+        <field name="shortCode" length="7" />
+        <field name="originalUrl" length="255" />
+        <field name="createdAt" type="datetime" column-definition="DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP" />
+        <field name="updatedAt" type="datetime" column-definition="DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP" />
+        <field name="deletedAt" type="datetime" nullable="true" column-definition="DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP" />
+    </entity>
+</doctrine-mapping>
